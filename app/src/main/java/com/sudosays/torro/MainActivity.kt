@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         /*val testView:TaskView = TaskView(this)
 
-
-
         container.addView(testView)
 
         testView.populate(t)*/
