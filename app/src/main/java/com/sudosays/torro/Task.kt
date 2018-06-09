@@ -8,6 +8,5 @@ package com.sudosays.torro
  *
  */
 
-class Task(var name:String, var duration:Float) {
-
-}
+data class Task(var name:String,
+                var duration:Float)

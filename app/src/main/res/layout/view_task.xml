@@ -6,19 +6,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@color/debugRed">
 
         <TextView
             android:id="@+id/nameView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textAlignment="viewStart"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/defaultText"
+            android:textSize="18sp"
+            android:background="@color/debugGreen"/>
 
         <TextView
             android:id="@+id/durationView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="2"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/defaultText"
+            android:textSize="18sp"
+            android:background="@color/debugGreen"/>
 
     </LinearLayout>
 
