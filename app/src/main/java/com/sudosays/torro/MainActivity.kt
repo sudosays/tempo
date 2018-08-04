@@ -1,6 +1,8 @@
 package com.sudosays.torro
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         val t:Task = Task("This has changed", 0.75f)
 
         singleTask.populate(t)
+
+        val gradientDrawable:GradientDrawable = container.background as GradientDrawable
+
+        //gradientDrawable.colors = intArrayOf(Color.BLACK,Color.RED,Color.DKGRAY)
+
 
     }
 

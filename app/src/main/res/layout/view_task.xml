@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:background="@color/debugRed">
+        android:background="#FFFFFF">
 
         <TextView
             android:id="@+id/nameView"
@@ -15,10 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="viewStart"
+            android:layout_gravity="start"
             android:layout_marginRight="5dp"
             android:textColor="@color/defaultText"
-            android:textSize="18sp"
-            android:background="@color/debugGreen"/>
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/durationView"
@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:textAlignment="viewEnd"
+            android:layout_gravity="end"
             android:textColor="@color/defaultText"
-            android:textSize="18sp"
-            android:background="@color/debugGreen"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
