@@ -7,4 +7,5 @@
     <color name="debugGreen">#00FF00</color>
     <color name="debugBlue">#0000FF</color>
     <color name="defaultText">#000000</color>
+    <color name="backgroundBlue">#73c2fb</color>
 </resources>
