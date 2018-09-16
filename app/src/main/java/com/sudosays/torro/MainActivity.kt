@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun startFlow(view: View) {
+        val intent: Intent = Intent(this, FlowOverview::class.java)
+        startActivity(intent)
+    }
+
     fun changeTaskInfo(view: View) {
 
         val t = Task("This has changed", 0.75f)
