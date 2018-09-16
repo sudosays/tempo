@@ -1,6 +1,7 @@
 package com.sudosays.torro
 
 import android.app.ActionBar
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintSet
@@ -18,6 +19,13 @@ class MainActivity : AppCompatActivity() {
         val t = Task("Say Hello", 1.0f)
 
         singleTask.populate(t)
+
+    }
+
+    fun addTask(view: View){
+
+        val intent:Intent = Intent(this, AddTask::class.java)
+        startActivity(intent)
 
     }
 
