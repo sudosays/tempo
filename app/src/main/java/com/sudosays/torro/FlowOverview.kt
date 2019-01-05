@@ -29,7 +29,7 @@ class FlowOverview : AppCompatActivity() {
     }
 
     init {
-        taskTimer = object: CountDownTimer(TASK_LENGTH, 1000) {
+        taskTimer = object: CountDownTimer(TASK_LENGTH, 100) {
 
             override fun onFinish() {
                 updateSession()
@@ -41,7 +41,7 @@ class FlowOverview : AppCompatActivity() {
 
         }
 
-        shortBreakTimer = object: CountDownTimer(SHORT_BREAK_LENGTH, 1000) {
+        shortBreakTimer = object: CountDownTimer(SHORT_BREAK_LENGTH, 100) {
 
             override fun onFinish() {
                 startTaskTimer()
@@ -53,7 +53,7 @@ class FlowOverview : AppCompatActivity() {
 
         }
 
-        longBreakTimer = object: CountDownTimer(LONG_BREAK_LENGTH, 1000) {
+        longBreakTimer = object: CountDownTimer(LONG_BREAK_LENGTH, 100) {
 
             override fun onFinish() {
                 startTaskTimer()
@@ -107,9 +107,11 @@ class FlowOverview : AppCompatActivity() {
     }
 
     private fun formatTimeRemaining(t: Long): String {
-        val minLeft = (t/60000).toInt()
+        /*val minLeft = (t/60000).toInt()
         val secLeft = (t-minLeft*60000)/1000
-        return "%02d:%02d".format(minLeft,secLeft)
+        return "%02d:%02d".format(minLeft,secLeft)*/
+        val output:Float = ((t)/1000f)
+        return "%.3f".format(output)
 
     }
 
