@@ -8,25 +8,30 @@ import android.os.Bundle
 import android.view.View
 import com.sudosays.torro.R
 import com.sudosays.torro.TaskArrayAdapter
+import com.sudosays.torro.TaskFetchASync
+import com.sudosays.torro.TaskInsertAsync
 import com.sudosays.torro.data.Task
+import com.sudosays.torro.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val ADD_TASK_REQUEST = 1
     private val taskMutableList = mutableListOf<Task>()
-    lateinit var listViewAdapter: TaskArrayAdapter
+    private lateinit var listViewAdapter: TaskArrayAdapter
+
+    private lateinit var db: TaskDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        taskMutableList.add(Task(0,"Say Hello", 1.0f))
-        taskMutableList.add(Task(0,"Hello World", 1.0f))
+        db = TaskDatabase.getInstance(this)
 
-        taskMutableList.add(Task(0,"Do something else", 1.0f))
+        //insertTasks()
 
+        taskMutableList.addAll(TaskFetchASync(db).execute().get())
 
         listViewAdapter = TaskArrayAdapter(this, R.layout.view_task, taskMutableList)
         taskListView.adapter = listViewAdapter
@@ -56,6 +61,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun insertTasks()
+    {
+        TaskInsertAsync(db).execute(Task(0,"Say Hello", 1.0f), Task(0,"Hello World", 1.0f),Task(0,"Do something else", 1.0f))
     }
 
 
