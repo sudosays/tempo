@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
         {
             if (resultCode == Activity.RESULT_OK)
             {
-                //taskMutableList.add(0,data.data?)
+                taskMutableList.clear()
+                taskMutableList.addAll(TaskFetchASync(db).execute().get())
                 listViewAdapter.notifyDataSetChanged()
             }
         }
