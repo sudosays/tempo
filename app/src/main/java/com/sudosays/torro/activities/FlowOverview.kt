@@ -1,10 +1,10 @@
-package com.sudosays.torro
+package com.sudosays.torro.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Toast
+import com.sudosays.torro.R
 import kotlinx.android.synthetic.main.activity_flow_overview.*
 
 class FlowOverview : AppCompatActivity() {

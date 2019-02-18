@@ -1,12 +1,12 @@
-package com.sudosays.torro
+package com.sudosays.torro.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.support.constraint.ConstraintLayout
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.widget.TextView
+import com.sudosays.torro.R
+import com.sudosays.torro.data.Task
 import kotlinx.android.synthetic.main.edit_task.view.*
 
 /**
@@ -44,7 +44,7 @@ class TaskEdit @JvmOverloads constructor(context: Context,
 
     }
 
-    fun populate(task:Task) {
+    fun populate(task: Task) {
         nameEditText.setText(task.name, TextView.BufferType.EDITABLE)
         durationEditText.setText(task.duration.toString(), TextView.BufferType.EDITABLE)
 

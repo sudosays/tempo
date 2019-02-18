@@ -4,11 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sudosays.torro.AddTask">
+    tools:context="com.sudosays.torro.activities.AddTask">
 
-    <com.sudosays.torro.TaskEdit
+    <com.sudosays.torro.views.TaskEdit
+        android:id="@+id/taskEditview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="216dp" />
+
+    <Button
+        android:id="@+id/saveTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveTask"
+        android:text="Save Task"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="445dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        tools:layout_editor_absoluteX="278dp"
+        tools:layout_editor_absoluteY="445dp" />
 
 
 </android.support.constraint.ConstraintLayout>
