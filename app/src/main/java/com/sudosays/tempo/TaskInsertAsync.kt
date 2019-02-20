@@ -1,8 +1,8 @@
-package com.sudosays.torro
+package com.sudosays.tempo
 
 import android.os.AsyncTask
-import com.sudosays.torro.data.Task
-import com.sudosays.torro.data.TaskDatabase
+import com.sudosays.tempo.data.Task
+import com.sudosays.tempo.data.TaskDatabase
 
 /**
  *

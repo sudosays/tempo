@@ -1,4 +1,4 @@
-package com.sudosays.torro.activities
+package com.sudosays.tempo.activities
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -7,10 +7,10 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.edit_task.view.*
 
-import com.sudosays.torro.R
-import com.sudosays.torro.TaskInsertAsync
-import com.sudosays.torro.data.Task
-import com.sudosays.torro.data.TaskDatabase
+import com.sudosays.tempo.R
+import com.sudosays.tempo.TaskInsertAsync
+import com.sudosays.tempo.data.Task
+import com.sudosays.tempo.data.TaskDatabase
 
 class AddTask : AppCompatActivity() {
 
