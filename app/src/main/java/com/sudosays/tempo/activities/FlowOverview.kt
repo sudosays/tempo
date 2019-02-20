@@ -1,10 +1,15 @@
-package com.sudosays.torro.activities
+package com.sudosays.tempo.activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import com.sudosays.torro.R
+import com.sudosays.tempo.R
+import com.sudosays.tempo.TaskDeleteAsync
+import com.sudosays.tempo.TaskFetchASync
+import com.sudosays.tempo.data.Task
+import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_flow_overview.*
 
 class FlowOverview : AppCompatActivity() {
@@ -22,10 +27,20 @@ class FlowOverview : AppCompatActivity() {
     private var shortBreakTimer: CountDownTimer
     private var longBreakTimer: CountDownTimer
 
+    private lateinit var db: TaskDatabase
+    private val todoList = mutableListOf<Task>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flow_overview)
+
+        db = TaskDatabase.getInstance(this)
+        todoList.addAll(TaskFetchASync(db).execute().get())
+        todoList?.let {
+            currentTaskNameView.text = todoList[0].name
+            nextTaskNameView.visibility = View.INVISIBLE
+        }
     }
 
     init {
@@ -82,36 +97,49 @@ class FlowOverview : AppCompatActivity() {
     }
 
     private fun startTaskTimer() {
-
+        currentTaskNameView.text = todoList[0].name
+        nextTaskNameView.visibility = View.INVISIBLE
         taskTimer.start()
     }
 
     private fun updateSession() {
 
-        sessionCount += 1
-        if (sessionCount >= 4) {
-            startLongBreak()
-            sessionCount = 0
+        TaskDeleteAsync(db).execute(todoList.removeAt(0))
+        if (todoList.isEmpty())
+        {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         } else {
-            startShortBreak()
+            sessionCount += 1
+            if (sessionCount >= 4) {
+                startLongBreak()
+                sessionCount = 0
+            } else {
+                startShortBreak()
+            }
         }
-
     }
 
     private fun startLongBreak() {
+        currentTaskNameView.text = "Long break"
+        nextTaskNameView.text = todoList[0].name
+        nextTaskNameView.visibility = View.VISIBLE
         longBreakTimer.start()
     }
 
     private fun startShortBreak() {
+        currentTaskNameView.text = "Short break"
+        nextTaskNameView.text = todoList[0].name
+        nextTaskNameView.visibility = View.VISIBLE
         shortBreakTimer.start()
     }
 
     private fun formatTimeRemaining(t: Long): String {
-        /*val minLeft = (t/60000).toInt()
+        val minLeft = (t/60000).toInt()
         val secLeft = (t-minLeft*60000)/1000
-        return "%02d:%02d".format(minLeft,secLeft)*/
-        val output:Float = ((t)/1000f)
-        return "%.3f".format(output)
+        return "%02d:%02d".format(minLeft,secLeft)
+        //val output:Float = ((t)/1000f)
+        //return "%.3f".format(output)
 
     }
 

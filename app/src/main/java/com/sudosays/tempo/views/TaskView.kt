@@ -1,4 +1,4 @@
-package com.sudosays.torro.views
+package com.sudosays.tempo.views
 
 /**
  *
@@ -14,8 +14,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 //import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.sudosays.torro.R
-import com.sudosays.torro.data.Task
+import com.sudosays.tempo.R
+import com.sudosays.tempo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
 
 

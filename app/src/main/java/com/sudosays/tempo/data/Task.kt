@@ -1,4 +1,4 @@
-package com.sudosays.torro.data
+package com.sudosays.tempo.data
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

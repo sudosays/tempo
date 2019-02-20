@@ -1,12 +1,12 @@
-package com.sudosays.torro.views
+package com.sudosays.tempo.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.widget.TextView
-import com.sudosays.torro.R
-import com.sudosays.torro.data.Task
+import com.sudosays.tempo.R
+import com.sudosays.tempo.data.Task
 import kotlinx.android.synthetic.main.edit_task.view.*
 
 /**
@@ -33,7 +33,7 @@ class TaskEdit @JvmOverloads constructor(context: Context,
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

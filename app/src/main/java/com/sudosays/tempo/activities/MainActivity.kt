@@ -1,4 +1,4 @@
-package com.sudosays.torro.activities
+package com.sudosays.tempo.activities
 
 
 import android.app.Activity
@@ -6,12 +6,13 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.sudosays.torro.R
-import com.sudosays.torro.TaskArrayAdapter
-import com.sudosays.torro.TaskFetchASync
-import com.sudosays.torro.TaskInsertAsync
-import com.sudosays.torro.data.Task
-import com.sudosays.torro.data.TaskDatabase
+import android.widget.Toast
+import com.sudosays.tempo.R
+import com.sudosays.tempo.TaskArrayAdapter
+import com.sudosays.tempo.TaskFetchASync
+import com.sudosays.tempo.TaskInsertAsync
+import com.sudosays.tempo.data.Task
+import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,8 +46,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startFlow(view: View) {
-        val intent = Intent(this, FlowOverview::class.java)
-        startActivity(intent)
+        if (taskMutableList.isNotEmpty()) {
+            val intent = Intent(this, FlowOverview::class.java)
+            startActivity(intent)
+        } else
+        {
+            Toast.makeText(this,"Add some tasks first!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent)
