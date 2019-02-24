@@ -143,4 +143,15 @@ class FlowOverview : AppCompatActivity() {
 
     }
 
+    private fun stopAllTimers(){
+        taskTimer.cancel()
+        shortBreakTimer.cancel()
+        longBreakTimer.cancel()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopAllTimers()
+    }
+
 }
