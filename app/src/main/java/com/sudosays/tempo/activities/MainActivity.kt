@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         } else
         {
-            Toast.makeText(this,"Add some tasks first!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,R.string.start_flow_help, Toast.LENGTH_SHORT).show()
         }
     }
 
