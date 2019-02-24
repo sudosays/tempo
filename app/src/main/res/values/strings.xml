@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Tempo</string>
+    <string name="start_flow_help">Add some tasks first!</string>
+    <string name="edit_task_task_name_label">Task name:</string>
+    <string name="edit_task_task_duration_label">Duration:</string>
+    <string name="edit_task_task_name_textedit_prompt">What do you want to do?</string>
+    <string name="edit_task_task_duration_textedit_prompt">How long?</string>
+    <string name="button_add_task">Add task</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_start_flow">Start flow</string>
+    <string name="button_stop_flow">Stop flow</string>
+    <string name="flow_timer_placeholder">25:00</string>
+    <string name="flow_current_task_placeholder">Current task</string>
+    <string name="flow_next_task_placeholder">Next task</string>
 </resources>

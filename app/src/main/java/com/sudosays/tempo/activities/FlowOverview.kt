@@ -81,11 +81,16 @@ class FlowOverview : AppCompatActivity() {
         }
     }
 
-    fun startTimer(view: View) {
+    fun startStopTimer(view: View) {
 
         if (!isRunning) {
             isRunning = true
             startTaskTimer()
+            button.text = getString(R.string.button_stop_flow)
+        } else {
+            isRunning = false
+            stopAllTimers()
+            button.text = getString(R.string.button_start_flow)
         }
 
     }
@@ -147,6 +152,7 @@ class FlowOverview : AppCompatActivity() {
         taskTimer.cancel()
         shortBreakTimer.cancel()
         longBreakTimer.cancel()
+        timeRemainingView.text = getString(R.string.flow_timer_placeholder)
     }
 
     override fun onStop() {
