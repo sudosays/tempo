@@ -12,4 +12,14 @@
     <string name="flow_timer_placeholder">25:00</string>
     <string name="flow_current_task_placeholder">Current task</string>
     <string name="flow_next_task_placeholder">Next task</string>
+
+    <string-array name="break_messages">
+        <item>Take a few deep breaths</item>
+        <item>Go for a walk</item>
+        <item>You're doing great! Keep it up!</item>
+        <item>Pat yourself on the back.</item>
+        <item>Relax</item>
+        <item>Be mindful</item>
+        <item>Daydream for a bit</item>
+    </string-array>
 </resources>

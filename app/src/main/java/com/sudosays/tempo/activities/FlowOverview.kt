@@ -11,6 +11,7 @@ import com.sudosays.tempo.TaskFetchASync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_flow_overview.*
+import java.util.*
 
 class FlowOverview : AppCompatActivity() {
 
@@ -126,14 +127,14 @@ class FlowOverview : AppCompatActivity() {
     }
 
     private fun startLongBreak() {
-        currentTaskNameView.text = "Long break"
+        currentTaskNameView.text = getBreakMessage()
         nextTaskNameView.text = todoList[0].name
         nextTaskNameView.visibility = View.VISIBLE
         longBreakTimer.start()
     }
 
     private fun startShortBreak() {
-        currentTaskNameView.text = "Short break"
+        currentTaskNameView.text = getBreakMessage()
         nextTaskNameView.text = todoList[0].name
         nextTaskNameView.visibility = View.VISIBLE
         shortBreakTimer.start()
@@ -158,6 +159,11 @@ class FlowOverview : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         stopAllTimers()
+    }
+
+    private fun getBreakMessage(): String {
+        val messages = resources.getStringArray(R.array.break_messages)
+        return messages.get(Random().nextInt(messages.size))
     }
 
 }
