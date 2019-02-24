@@ -62,18 +62,21 @@ class MainActivity : AppCompatActivity() {
         {
             if (resultCode == Activity.RESULT_OK)
             {
-                taskMutableList.clear()
-                taskMutableList.addAll(TaskFetchASync(db).execute().get())
-                listViewAdapter.notifyDataSetChanged()
+                reloadTasks()
             }
         }
 
     }
 
-    private fun insertTasks()
-    {
-        TaskInsertAsync(db).execute(Task(0,"Say Hello", 1.0f), Task(0,"Hello World", 1.0f),Task(0,"Do something else", 1.0f))
+    override fun onResume() {
+        super.onResume()
+        reloadTasks()
     }
 
+    private fun reloadTasks() {
+        taskMutableList.clear()
+        taskMutableList.addAll(TaskFetchASync(db).execute().get())
+        listViewAdapter.notifyDataSetChanged()
+    }
 
 }
