@@ -17,10 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AddTask" />
-        <activity android:name=".activities.FlowOverview"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".activities.FlowOverview"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".FlowSettings"></activity>
     </application>
 
 </manifest>
