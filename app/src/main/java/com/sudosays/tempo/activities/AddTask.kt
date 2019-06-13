@@ -16,7 +16,8 @@ class AddTask : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
@@ -30,6 +31,14 @@ class AddTask : AppCompatActivity() {
         TaskInsertAsync(db).execute(task)
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
 
+    }
+
+    fun cancel(view: View)
+    {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

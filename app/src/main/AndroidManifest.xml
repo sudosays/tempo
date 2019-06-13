@@ -19,8 +19,8 @@
         <activity android:name=".activities.AddTask" />
         <activity
             android:name=".activities.FlowOverview"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".FlowSettings"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activities.FlowSettings" />
     </application>
 
 </manifest>

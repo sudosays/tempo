@@ -7,10 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.sudosays.tempo.R
-import com.sudosays.tempo.TaskArrayAdapter
-import com.sudosays.tempo.TaskFetchASync
-import com.sudosays.tempo.TaskInsertAsync
+import com.sudosays.tempo.*
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -38,21 +36,30 @@ class MainActivity : AppCompatActivity() {
         taskListView.adapter = listViewAdapter
     }
 
-    fun addTask(view: View){
+    fun addTask(view: View)
+    {
 
         val intent = Intent(this, AddTask::class.java)
         startActivityForResult(intent, ADD_TASK_REQUEST)
 
     }
 
-    fun startFlow(view: View) {
-        if (taskMutableList.isNotEmpty()) {
+    fun startFlow(view: View)
+    {
+        if (taskMutableList.isNotEmpty())
+        {
             val intent = Intent(this, FlowOverview::class.java)
             startActivity(intent)
         } else
         {
             Toast.makeText(this,R.string.start_flow_help, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun openSettings(view: View)
+    {
+        val intent = Intent(this, FlowSettings::class.java)
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent)
@@ -68,12 +75,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
+    override fun onResume()
+    {
         super.onResume()
         reloadTasks()
     }
 
-    private fun reloadTasks() {
+    private fun reloadTasks()
+    {
         taskMutableList.clear()
         taskMutableList.addAll(TaskFetchASync(db).execute().get())
         listViewAdapter.notifyDataSetChanged()

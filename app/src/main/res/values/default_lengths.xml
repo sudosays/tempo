@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="default_task_length">20</integer>
+    <integer name="default_short_break_length">3</integer>
+    <integer name="default_long_break_length">20</integer>
+    <integer name="default_task_increment">5</integer>
+    <integer name="default_short_break_increment">2</integer>
+    <integer name="default_long_break_increment">10</integer>
+</resources>

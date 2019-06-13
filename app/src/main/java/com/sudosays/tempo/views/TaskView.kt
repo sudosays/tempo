@@ -26,13 +26,15 @@ class TaskView @JvmOverloads constructor(
         defStyleRes: Int = 0
         ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
-    init {
+    init
+    {
         LayoutInflater.from(context).inflate(R.layout.view_task, this, true)
         this.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         //orientation = HORIZONTAL
     }
 
-    fun populate(task: Task) {
+    fun populate(task: Task)
+    {
 
         nameView.text = task.name
         durationView.text = task.duration.toString()
