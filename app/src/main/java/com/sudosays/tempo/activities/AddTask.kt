@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.edit_task.view.*
 
@@ -26,12 +27,16 @@ class AddTask : AppCompatActivity() {
 
     fun saveTask(view: View)
     {
-
-        val task = Task(0,taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toFloat())
-        TaskInsertAsync(db).execute(task)
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
+            val task = Task(0, taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toFloat())
+            TaskInsertAsync(db).execute(task)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else
+        {
+            Toast.makeText(this.applicationContext,"You need to fill out the task!", Toast.LENGTH_SHORT).show()
+        }
 
     }
 
