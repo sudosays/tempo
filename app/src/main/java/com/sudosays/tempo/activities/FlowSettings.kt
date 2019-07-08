@@ -39,15 +39,11 @@ class FlowSettings : AppCompatActivity() {
             apply()
         }
         Toast.makeText(this.applicationContext,getString(R.string.feedback_saved_settings),Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
         finish()
     }
 
     fun cancel(view: View)
     {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
         finish()
     }
 

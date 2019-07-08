@@ -124,8 +124,7 @@ class FlowOverview : AppCompatActivity() {
 
         if (todoList.isEmpty())
         {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         } else {
             sessionCount += 1
             if (sessionCount >= 4) {

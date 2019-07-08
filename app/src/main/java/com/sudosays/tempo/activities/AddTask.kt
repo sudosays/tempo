@@ -1,5 +1,6 @@
 package com.sudosays.tempo.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -30,8 +31,7 @@ class AddTask : AppCompatActivity() {
         if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
             val task = Task(0, taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toFloat())
             TaskInsertAsync(db).execute(task)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            setResult(Activity.RESULT_OK, Intent())
             finish()
         } else
         {
@@ -42,8 +42,7 @@ class AddTask : AppCompatActivity() {
 
     fun cancel(view: View)
     {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        setResult(Activity.RESULT_OK, Intent())
         finish()
     }
 }
