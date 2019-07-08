@@ -10,6 +10,7 @@ import android.view.View
 import com.sudosays.tempo.R
 import com.sudosays.tempo.TaskDeleteAsync
 import com.sudosays.tempo.TaskFetchASync
+import com.sudosays.tempo.TaskUpdateAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_flow_overview.*
@@ -114,7 +115,13 @@ class FlowOverview : AppCompatActivity() {
 
     private fun updateSession() {
 
-        TaskDeleteAsync(db).execute(todoList.removeAt(0))
+        todoList[0].duration -= 1
+        if (todoList[0].duration <= 0) {
+            TaskDeleteAsync(db).execute(todoList.removeAt(0))
+        } else {
+            TaskUpdateAsync(db).execute(todoList[0])
+        }
+
         if (todoList.isEmpty())
         {
             val intent = Intent(this, MainActivity::class.java)
