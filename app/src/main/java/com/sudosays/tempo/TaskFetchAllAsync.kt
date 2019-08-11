@@ -11,7 +11,7 @@ import com.sudosays.tempo.data.TaskDatabase
  * Created on: 2019/02/18
  *
  */
-class TaskFetchASync (val db: TaskDatabase) : AsyncTask<Void, Void, MutableList<Task>> (){
+class TaskFetchAllAsync(val db: TaskDatabase) : AsyncTask<Void, Void, MutableList<Task>> (){
 
     override fun doInBackground(vararg p0: Void?): MutableList<Task>? {
 

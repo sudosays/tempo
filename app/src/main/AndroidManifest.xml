@@ -21,6 +21,7 @@
             android:name=".activities.FlowOverview"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activities.FlowSettings" />
+        <activity android:name=".activities.EditTask" />
     </application>
 
 </manifest>

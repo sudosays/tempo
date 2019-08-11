@@ -1,15 +1,13 @@
 package com.sudosays.tempo.activities
 
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import com.sudosays.tempo.R
 import com.sudosays.tempo.TaskDeleteAsync
-import com.sudosays.tempo.TaskFetchASync
+import com.sudosays.tempo.TaskFetchAllAsync
 import com.sudosays.tempo.TaskUpdateAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
@@ -37,7 +35,7 @@ class FlowOverview : AppCompatActivity() {
         setContentView(R.layout.activity_flow_overview)
 
         db = TaskDatabase.getInstance(this)
-        todoList.addAll(TaskFetchASync(db).execute().get())
+        todoList.addAll(TaskFetchAllAsync(db).execute().get())
         todoList?.let {
             currentTaskNameView.text = todoList[0].name
             nextTaskNameView.visibility = View.INVISIBLE

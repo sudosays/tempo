@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import com.sudosays.tempo.*
 import com.sudosays.tempo.data.Task
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val ADD_TASK_REQUEST = 1
+    private val EDIT_TASK_REQUEST = 2
     private val taskMutableList = mutableListOf<Task>()
     private lateinit var listViewAdapter: TaskArrayAdapter
 
@@ -30,10 +32,16 @@ class MainActivity : AppCompatActivity() {
 
         //insertTasks()
 
-        taskMutableList.addAll(TaskFetchASync(db).execute().get())
+        taskMutableList.addAll(TaskFetchAllAsync(db).execute().get())
 
         listViewAdapter = TaskArrayAdapter(this, R.layout.view_task, taskMutableList)
         taskListView.adapter = listViewAdapter
+
+        taskListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, EditTask::class.java)
+            intent.putExtra("taskid", listViewAdapter.getItem(position).uid)
+            startActivityForResult(intent, EDIT_TASK_REQUEST)
+        }
     }
 
     fun addTask(view: View)
@@ -65,12 +73,9 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent)
     {
 
-        if (requestCode == ADD_TASK_REQUEST)
-        {
-            if (resultCode == Activity.RESULT_OK)
-            {
-                reloadTasks()
-            }
+        when (requestCode) {
+            ADD_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
+            EDIT_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
         }
 
     }
@@ -84,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     private fun reloadTasks()
     {
         taskMutableList.clear()
-        taskMutableList.addAll(TaskFetchASync(db).execute().get())
+        taskMutableList.addAll(TaskFetchAllAsync(db).execute().get())
         listViewAdapter.notifyDataSetChanged()
     }
 

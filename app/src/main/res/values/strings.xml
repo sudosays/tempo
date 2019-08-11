@@ -8,6 +8,8 @@
     <string name="button_add_task">Add task</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
+    <string name="button_delete_task">Delete</string>
+    <string name="button_update_task">Save task</string>
     <string name="button_start_flow">Start flow</string>
     <string name="button_stop_flow">Stop flow</string>
     <string name="button_settings">Settings</string>
