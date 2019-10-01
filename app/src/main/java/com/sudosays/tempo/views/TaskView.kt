@@ -9,6 +9,7 @@ package com.sudosays.tempo.views
  */
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -43,8 +44,13 @@ class TaskView @JvmOverloads constructor(
 
     fun showSelected() {
 
-        nameView.text = "*" + nameView.text
+        taskLinearLayout.background = resources.getDrawable(R.drawable.taskview_layout_bg_selected, context.theme)
 
+
+    }
+
+    fun deselect() {
+        taskLinearLayout.background = resources.getDrawable(R.drawable.taskview_layout_bg, context.theme)
     }
 
 }

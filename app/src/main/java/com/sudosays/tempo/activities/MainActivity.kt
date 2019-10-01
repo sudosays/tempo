@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 
+    private var selectedTaskPosition:Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -40,9 +42,6 @@ class MainActivity : AppCompatActivity() {
         taskListView.adapter = listViewAdapter
 
         taskListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            //val intent = Intent(this, EditTask::class.java)
-            //intent.putExtra("taskid", listViewAdapter.getItem(position).uid)
-            //startActivityForResult(intent, EDIT_TASK_REQUEST)
             switchToEditMode(position, view as TaskView)
         }
     }
@@ -78,7 +77,12 @@ class MainActivity : AppCompatActivity() {
 
         when (requestCode) {
             ADD_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
-            EDIT_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
+            EDIT_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {
+                switchToOverviewMode(editTaskButton)
+                reloadTasks()
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                reloadTasks()
+            }
         }
 
     }
@@ -105,9 +109,8 @@ class MainActivity : AppCompatActivity() {
         moveDownButton.visibility = View.VISIBLE
         exitEditModeButton.visibility = View.VISIBLE
 
-        //listViewAdapter.getItem(taskPosition).name = "Selected"
-        //listViewAdapter.notifyDataSetChanged()
-        taskView.showSelected()
+        //taskView.showSelected()
+        selectedTaskPosition = taskPosition
     }
 
     fun switchToOverviewMode(view: View) {
@@ -118,5 +121,31 @@ class MainActivity : AppCompatActivity() {
         moveUpButton.visibility = View.GONE
         moveDownButton.visibility = View.GONE
         exitEditModeButton.visibility = View.GONE
+
+        selectedTaskPosition = -1
+    }
+
+    fun editTask(view: View) {
+        val intent = Intent(this, EditTask::class.java)
+        intent.putExtra("taskid", listViewAdapter.getItem(selectedTaskPosition).uid)
+        startActivityForResult(intent, EDIT_TASK_REQUEST)
+    }
+
+    fun moveTaskUp(view: View) {
+
+        if (selectedTaskPosition > 0 && listViewAdapter.count > 1) {
+            taskMutableList.add(selectedTaskPosition - 1, taskMutableList.removeAt(selectedTaskPosition))
+            listViewAdapter.notifyDataSetChanged()
+            selectedTaskPosition -= 1
+        }
+    }
+
+    fun moveTaskDown(view: View) {
+
+        if (selectedTaskPosition < taskMutableList.lastIndex && listViewAdapter.count > 1) {
+            taskMutableList.add(selectedTaskPosition + 1, taskMutableList.removeAt(selectedTaskPosition))
+            listViewAdapter.notifyDataSetChanged()
+            selectedTaskPosition += 1
+        }
     }
 }

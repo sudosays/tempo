@@ -48,7 +48,7 @@ class EditTask : AppCompatActivity() {
 
     fun cancel(view: View)
     {
-        setResult(Activity.RESULT_OK, Intent())
+        setResult(Activity.RESULT_CANCELED, Intent())
         finish()
     }
 

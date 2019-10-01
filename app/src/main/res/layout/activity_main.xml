@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Edit"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:onClick="editTask"/>
 
         <Button
             android:id="@+id/moveDownButton"
@@ -47,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Down"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:onClick="moveTaskDown"/>
 
         <Button
             android:id="@+id/moveUpButton"
@@ -55,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Up"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:onClick="moveTaskUp"/>
 
         <Button
             android:id="@+id/exitEditModeButton"
