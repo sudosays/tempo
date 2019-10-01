@@ -1,4 +1,4 @@
-package com.sudosays.tempo
+package com.sudosays.tempo.async
 
 import android.os.AsyncTask
 import com.sudosays.tempo.data.Task

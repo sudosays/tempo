@@ -1,4 +1,4 @@
-package com.sudosays.tempo
+package com.sudosays.tempo.data
 
 import android.content.Context
 import android.view.View

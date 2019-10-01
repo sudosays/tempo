@@ -12,7 +12,7 @@ import android.arch.persistence.room.*
 @Dao
 interface TaskDao {
 
-    @Query("SELECT * FROM tasks")
+    @Query("SELECT * FROM tasks ORDER BY position ASC")
     fun getAll(): MutableList<Task>
 
     @Query("SELECT * FROM tasks WHERE uid == :uid")

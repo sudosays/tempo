@@ -3,14 +3,16 @@ package com.sudosays.tempo.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import com.sudosays.tempo.*
+import com.sudosays.tempo.async.TaskFetchAllAsync
+import com.sudosays.tempo.async.TaskUpdateAllAsync
 import com.sudosays.tempo.data.Task
+import com.sudosays.tempo.data.TaskArrayAdapter
 import com.sudosays.tempo.data.TaskDatabase
 import com.sudosays.tempo.views.TaskView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -82,6 +84,14 @@ class MainActivity : AppCompatActivity() {
                 reloadTasks()
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 reloadTasks()
+            // If the task was deleted
+            } else if (resultCode == Activity.RESULT_FIRST_USER) {
+                if (taskMutableList.size != 0) {
+                    for (i in selectedTaskPosition..(taskMutableList.size - 1)) {
+                        taskMutableList[i].position -= 1
+                    }
+                    syncPositionsWithDb()
+                }
             }
         }
 
@@ -109,8 +119,15 @@ class MainActivity : AppCompatActivity() {
         moveDownButton.visibility = View.VISIBLE
         exitEditModeButton.visibility = View.VISIBLE
 
-        //taskView.showSelected()
+        if (selectedTaskPosition != taskPosition && selectedTaskPosition >= 0) {
+            val oldTask = taskListView.getChildAt(selectedTaskPosition) as TaskView
+            oldTask.deselect()
+
+        }
+
+        taskView.showSelected()
         selectedTaskPosition = taskPosition
+
     }
 
     fun switchToOverviewMode(view: View) {
@@ -122,7 +139,13 @@ class MainActivity : AppCompatActivity() {
         moveDownButton.visibility = View.GONE
         exitEditModeButton.visibility = View.GONE
 
+        if (taskMutableList.size > 0) {
+            setTaskViewSelected(selectedTaskPosition, false)
+            syncPositionsWithDb()
+        }
+
         selectedTaskPosition = -1
+        syncPositionsWithDb()
     }
 
     fun editTask(view: View) {
@@ -134,18 +157,41 @@ class MainActivity : AppCompatActivity() {
     fun moveTaskUp(view: View) {
 
         if (selectedTaskPosition > 0 && listViewAdapter.count > 1) {
+            taskMutableList[selectedTaskPosition].position -= 1
+            taskMutableList[selectedTaskPosition - 1].position += 1
+
             taskMutableList.add(selectedTaskPosition - 1, taskMutableList.removeAt(selectedTaskPosition))
             listViewAdapter.notifyDataSetChanged()
             selectedTaskPosition -= 1
+            setTaskViewSelected(selectedTaskPosition, true)
         }
     }
 
     fun moveTaskDown(view: View) {
 
         if (selectedTaskPosition < taskMutableList.lastIndex && listViewAdapter.count > 1) {
+            taskMutableList[selectedTaskPosition].position += 1
+            taskMutableList[selectedTaskPosition + 1].position -= 1
+
             taskMutableList.add(selectedTaskPosition + 1, taskMutableList.removeAt(selectedTaskPosition))
             listViewAdapter.notifyDataSetChanged()
+
             selectedTaskPosition += 1
+            setTaskViewSelected(selectedTaskPosition, true)
+
+        }
+    }
+
+    private fun syncPositionsWithDb() {
+        TaskUpdateAllAsync(db).execute(*taskMutableList.toTypedArray())
+    }
+
+    private fun setTaskViewSelected(position:Int, isSelected: Boolean) {
+        val taskView = taskListView.getChildAt(position) as TaskView
+        if (isSelected) {
+            taskView.showSelected()
+        } else {
+            taskView.deselect()
         }
     }
 }

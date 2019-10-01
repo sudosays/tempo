@@ -10,6 +10,7 @@ package com.sudosays.tempo.views
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.sudosays.tempo.R
 import com.sudosays.tempo.data.Task
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.view_task.view.*
 
 
@@ -38,19 +40,19 @@ class TaskView @JvmOverloads constructor(
     {
 
         nameView.text = task.name
-        durationView.text = task.duration.toString()
+        //durationView.text = task.duration.toString()
+        durationView.text = task.position.toString()
 
     }
 
     fun showSelected() {
-
-        taskLinearLayout.background = resources.getDrawable(R.drawable.taskview_layout_bg_selected, context.theme)
-
-
+        this.taskLinearLayout.isSelected = true
+        invalidate()
     }
 
     fun deselect() {
-        taskLinearLayout.background = resources.getDrawable(R.drawable.taskview_layout_bg, context.theme)
+        this.taskLinearLayout.isSelected = false
+        invalidate()
     }
 
 }

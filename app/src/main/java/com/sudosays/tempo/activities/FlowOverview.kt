@@ -1,14 +1,16 @@
 package com.sudosays.tempo.activities
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import com.sudosays.tempo.R
-import com.sudosays.tempo.TaskDeleteAsync
-import com.sudosays.tempo.TaskFetchAllAsync
-import com.sudosays.tempo.TaskUpdateAsync
+import com.sudosays.tempo.async.TaskDeleteAsync
+import com.sudosays.tempo.async.TaskFetchAllAsync
+import com.sudosays.tempo.async.TaskUpdateAllAsync
+import com.sudosays.tempo.async.TaskUpdateAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_flow_overview.*
@@ -29,6 +31,7 @@ class FlowOverview : AppCompatActivity() {
     private lateinit var db: TaskDatabase
     private val todoList = mutableListOf<Task>()
 
+    private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,7 @@ class FlowOverview : AppCompatActivity() {
             nextTaskNameView.visibility = View.INVISIBLE
         }
 
-        val sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE)
+        sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE)
         val taskLength = sharedPrefs.getInt(getString(R.string.task_length_key), resources.getInteger(R.integer.default_task_length)).toLong() * 60000
         val shortBreakLength = sharedPrefs.getInt(getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length)).toLong() * 60000
         val longBreakLength = sharedPrefs.getInt(getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length)).toLong() * 60000
@@ -116,6 +119,8 @@ class FlowOverview : AppCompatActivity() {
         todoList[0].duration -= 1
         if (todoList[0].duration <= 0) {
             TaskDeleteAsync(db).execute(todoList.removeAt(0))
+            decrementPositions()
+            syncPositionsWithDb()
         } else {
             TaskUpdateAsync(db).execute(todoList[0])
         }
@@ -168,6 +173,25 @@ class FlowOverview : AppCompatActivity() {
     private fun getBreakMessage(): String {
         val messages = resources.getStringArray(R.array.break_messages)
         return messages.get(Random().nextInt(messages.size))
+    }
+
+    private fun decrementPositions() {
+        for (t in todoList) {
+            t.position -= 1
+        }
+        val lastPosition = sharedPrefs.getInt("last_position",0)
+
+        with(sharedPrefs.edit()) {
+            if (lastPosition > 0) {
+                putInt("last_position", lastPosition - 1)
+            } else {
+                putInt("last_position", 0)
+            }
+        }
+    }
+
+    private fun syncPositionsWithDb() {
+        TaskUpdateAllAsync(db).execute(*todoList.toTypedArray())
     }
 
 }
