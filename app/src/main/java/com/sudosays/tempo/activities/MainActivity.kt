@@ -3,6 +3,7 @@ package com.sudosays.tempo.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Toast
 import com.sudosays.tempo.*
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
+import com.sudosays.tempo.views.TaskView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -38,9 +40,10 @@ class MainActivity : AppCompatActivity() {
         taskListView.adapter = listViewAdapter
 
         taskListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, EditTask::class.java)
-            intent.putExtra("taskid", listViewAdapter.getItem(position).uid)
-            startActivityForResult(intent, EDIT_TASK_REQUEST)
+            //val intent = Intent(this, EditTask::class.java)
+            //intent.putExtra("taskid", listViewAdapter.getItem(position).uid)
+            //startActivityForResult(intent, EDIT_TASK_REQUEST)
+            switchToEditMode(position, view as TaskView)
         }
     }
 
@@ -93,4 +96,27 @@ class MainActivity : AppCompatActivity() {
         listViewAdapter.notifyDataSetChanged()
     }
 
+    private fun switchToEditMode(taskPosition: Int, taskView: TaskView) {
+        startFlowButton.visibility = View.GONE
+        addTaskButton.visibility = View.GONE
+        settingsButton.visibility = View.GONE
+        editTaskButton.visibility = View.VISIBLE
+        moveUpButton.visibility = View.VISIBLE
+        moveDownButton.visibility = View.VISIBLE
+        exitEditModeButton.visibility = View.VISIBLE
+
+        //listViewAdapter.getItem(taskPosition).name = "Selected"
+        //listViewAdapter.notifyDataSetChanged()
+        taskView.showSelected()
+    }
+
+    fun switchToOverviewMode(view: View) {
+        startFlowButton.visibility = View.VISIBLE
+        addTaskButton.visibility = View.VISIBLE
+        settingsButton.visibility = View.VISIBLE
+        editTaskButton.visibility = View.GONE
+        moveUpButton.visibility = View.GONE
+        moveDownButton.visibility = View.GONE
+        exitEditModeButton.visibility = View.GONE
+    }
 }

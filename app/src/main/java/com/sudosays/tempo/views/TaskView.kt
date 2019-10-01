@@ -41,4 +41,10 @@ class TaskView @JvmOverloads constructor(
 
     }
 
+    fun showSelected() {
+
+        nameView.text = "*" + nameView.text
+
+    }
+
 }
