@@ -36,7 +36,7 @@ class AddTask : AppCompatActivity() {
     {
         if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
             val last_position = sharedPrefs.getInt("last_position",0)
-            val task = Task(0, taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toFloat(), last_position)
+            val task = Task(0, taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toInt(), last_position)
             TaskInsertAsync(db).execute(task)
 
             with(sharedPrefs.edit()) {

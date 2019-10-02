@@ -9,10 +9,12 @@ package com.sudosays.tempo.views
  */
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 //import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -29,19 +31,21 @@ class TaskView @JvmOverloads constructor(
         defStyleRes: Int = 0
         ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     init
     {
         LayoutInflater.from(context).inflate(R.layout.view_task, this, true)
         this.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        //orientation = HORIZONTAL
+
+        sharedPreferences = context.getSharedPreferences(resources.getString(R.string.settings_file_key), Context.MODE_PRIVATE)
     }
 
     fun populate(task: Task)
     {
 
         nameView.text = task.name
-        //durationView.text = task.duration.toString()
-        durationView.text = task.position.toString()
+        durationView.text = convertDurationToTime(task.duration.toInt())
 
     }
 
@@ -53,6 +57,32 @@ class TaskView @JvmOverloads constructor(
     fun deselect() {
         this.taskLinearLayout.isSelected = false
         invalidate()
+    }
+
+    private fun convertDurationToTime(duration: Int): String {
+        val taskLength = sharedPreferences.getInt(resources.getString(R.string.task_length_key), resources.getInteger(R.integer.default_task_length))
+        val shortBreakLength = sharedPreferences.getInt(resources.getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length))
+        val longBreakLength = sharedPreferences.getInt(resources.getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length))
+
+        var totaltime = duration*taskLength
+
+        val numLongBreaks = if (duration <= 4) 0 else duration/4
+        val numShortBreaks = duration - numLongBreaks - 1
+
+        totaltime += numShortBreaks*shortBreakLength + numLongBreaks*longBreakLength
+
+        var timeString:String
+
+        if (totaltime/60 > 0) {
+            timeString = "" + totaltime/60 + "h"
+            if (totaltime%60 > 0) {
+                timeString += "" + totaltime%60 + "min"
+            }
+        } else {
+            timeString = "" + totaltime + "min"
+        }
+
+        return timeString
     }
 
 }

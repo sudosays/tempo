@@ -15,5 +15,5 @@ import android.arch.persistence.room.PrimaryKey
 @Entity (tableName = "tasks")
 data class Task(@PrimaryKey(autoGenerate = true) var uid :Int,
                 @ColumnInfo(name = "task_name") var name:String,
-                @ColumnInfo(name = "task_duration") var duration:Float,
+                @ColumnInfo(name = "task_duration") var duration:Int,
                 @ColumnInfo(name = "position") var position: Int)

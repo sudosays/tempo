@@ -42,7 +42,7 @@ class EditTask : AppCompatActivity() {
     {
         if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
             taskToEdit.name = taskEditview.nameEditText.text.toString()
-            taskToEdit.duration = taskEditview.durationEditText.text.toString().toFloat()
+            taskToEdit.duration = taskEditview.durationEditText.text.toString().toInt()
             TaskUpdateAsync(db).execute(taskToEdit)
             setResult(Activity.RESULT_OK, Intent())
             finish()
