@@ -51,11 +51,16 @@ class TaskView @JvmOverloads constructor(
 
     fun showSelected() {
         this.taskLinearLayout.isSelected = true
+        nameView.setTextColor(resources.getColor(android.R.color.white))
+        durationView.setTextColor(resources.getColor(android.R.color.white))
+
         invalidate()
     }
 
     fun deselect() {
         this.taskLinearLayout.isSelected = false
+        nameView.setTextColor(resources.getColor(android.R.color.black))
+        durationView.setTextColor(resources.getColor(android.R.color.black))
         invalidate()
     }
 
