@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="defaultText">#000000</color>
     <color name="backgroundBlue">#73c2fb</color>
+
+    <color name="focusTextColor">#303030</color>
+    <color name="breakTextColor">#ffffff</color>
+    <color name="shortBreakBackgroundColor">#2ade2a</color>
+    <color name="longBreakBackgroundColor">#303030</color>
+    <color name="focusBackgroundColor">#73c2fb</color>
 </resources>

@@ -86,6 +86,8 @@ class FlowOverview : AppCompatActivity() {
             }
 
         }
+
+        setFocusColors();
     }
 
     fun startStopTimer(view: View) {
@@ -112,6 +114,7 @@ class FlowOverview : AppCompatActivity() {
         currentTaskNameView.text = todoList[0].name
         nextTaskNameView.visibility = View.INVISIBLE
         taskTimer.start()
+        setFocusColors()
     }
 
     private fun updateSession() {
@@ -144,6 +147,7 @@ class FlowOverview : AppCompatActivity() {
         nextTaskNameView.text = todoList[0].name
         nextTaskNameView.visibility = View.VISIBLE
         longBreakTimer.start()
+        setLongBreakColors()
     }
 
     private fun startShortBreak() {
@@ -151,6 +155,7 @@ class FlowOverview : AppCompatActivity() {
         nextTaskNameView.text = todoList[0].name
         nextTaskNameView.visibility = View.VISIBLE
         shortBreakTimer.start()
+        setShortBreakColors()
     }
 
     private fun formatTimeRemaining(t: Long): String {
@@ -193,5 +198,24 @@ class FlowOverview : AppCompatActivity() {
     private fun syncPositionsWithDb() {
         TaskUpdateAllAsync(db).execute(*todoList.toTypedArray())
     }
+
+    private fun setFocusColors() {
+
+        flowParent.background = getDrawable(R.color.focusBackgroundColor)
+
+    }
+
+    private fun setShortBreakColors() {
+
+        flowParent.background = getDrawable(R.color.shortBreakBackgroundColor)
+
+    }
+
+    private fun setLongBreakColors() {
+
+        flowParent.background = getDrawable(R.color.longBreakBackgroundColor)
+
+    }
+
 
 }
