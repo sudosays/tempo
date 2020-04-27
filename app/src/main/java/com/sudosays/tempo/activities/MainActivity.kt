@@ -80,8 +80,8 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             ADD_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
             EDIT_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {
-                switchToOverviewMode(editTaskButton)
                 reloadTasks()
+                switchToOverviewMode(editTaskButton)
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 reloadTasks()
             // If the task was deleted
@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
                     syncPositionsWithDb()
                 }
             }
+
         }
 
     }
