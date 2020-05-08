@@ -1,11 +1,11 @@
 package com.sudosays.tempo.activities
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import com.sudosays.tempo.R
 import kotlinx.android.synthetic.main.activity_flow_settings.*
@@ -14,18 +14,43 @@ class FlowSettings : AppCompatActivity() {
 
     private lateinit var sharedPrefs:SharedPreferences
 
-    private val taskIncrement = resources.getInteger(R.integer.default_task_increment)
-    private val shortBreakIncrement = resources.getInteger(R.integer.default_short_break_increment)
-    private val longBreakIncrement = resources.getInteger(R.integer.default_long_break_increment)
-    private val defaultTaskLength = resources.getInteger(R.integer.default_task_length)
-    private val defaultShortBreakLength = resources.getInteger(R.integer.default_short_break_length)
-    private val defaultLongBreakLength = resources.getInteger(R.integer.default_long_break_length)
+    private val taskIncrement by lazy { resources.getInteger(R.integer.default_task_increment) }
+    private val shortBreakIncrement by lazy { resources.getInteger(R.integer.default_short_break_increment) }
+    private val longBreakIncrement by lazy { resources.getInteger(R.integer.default_long_break_increment) }
+    private val defaultTaskLength by lazy { resources.getInteger(R.integer.default_task_length) }
+    private val defaultShortBreakLength by lazy { resources.getInteger(R.integer.default_short_break_length) }
+    private val defaultLongBreakLength by lazy { resources.getInteger(R.integer.default_long_break_length) }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flow_settings)
         sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key),Context.MODE_PRIVATE)
+
+        val seekbarChangeListener = object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress:Int, fromUser:Boolean) {
+
+                when (seekBar) {
+                    taskTimeSeekBar -> updateTaskLabel()
+                    shortBreakSeekBar -> updateShortBreakLabel()
+                    longBreakSeekBar -> updateLongBreakLabel()
+                    else -> Toast.makeText(applicationContext, "What Seekbar are you pressing?!?!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        }
+
+        taskTimeSeekBar.setOnSeekBarChangeListener(seekbarChangeListener)
+        shortBreakSeekBar.setOnSeekBarChangeListener(seekbarChangeListener)
+        longBreakSeekBar.setOnSeekBarChangeListener(seekbarChangeListener)
 
         setSeekBars()
         setLabels()
@@ -52,46 +77,44 @@ class FlowSettings : AppCompatActivity() {
 
     private fun setSeekBars(){
 
-        var taskLength = sharedPrefs.getInt(getString(R.string.task_length_key),resources.getInteger(R.integer.default_task_length))
-        var shortBreakLength = sharedPrefs.getInt(getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length))
-        var longBreakLength = sharedPrefs.getInt(getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length))
+        var taskLength = sharedPrefs.getInt(getString(R.string.task_length_key), defaultTaskLength)
+        var shortBreakLength = sharedPrefs.getInt(getString(R.string.short_break_key), defaultShortBreakLength)
+        var longBreakLength = sharedPrefs.getInt(getString(R.string.long_break_key), defaultLongBreakLength)
 
-        if (taskLength == defaultTaskLength)
-        {
-            taskTimeSeekBar.progress = 0
-        } else
-        {
-            taskTimeSeekBar.progress = (taskLength - defaultTaskLength)/taskIncrement
-        }
-
-        if (shortBreakLength == defaultShortBreakLength)
-        {
-            shortBreakSeekBar.progress = 0
-        } else
-        {
-            shortBreakSeekBar.progress = (shortBreakLength - defaultShortBreakLength)/shortBreakIncrement
-        }
-
-        if (longBreakLength == defaultLongBreakLength)
-        {
-            longBreakSeekBar.progress = 0
-        } else
-        {
-            longBreakSeekBar.progress = (longBreakLength - defaultLongBreakLength)/longBreakIncrement
-        }
+        taskTimeSeekBar.progress = (taskLength - defaultTaskLength)/taskIncrement
+        shortBreakSeekBar.progress = (shortBreakLength - defaultShortBreakLength)/shortBreakIncrement
+        longBreakSeekBar.progress = (longBreakLength - defaultLongBreakLength)/longBreakIncrement
 
     }
 
     private fun setLabels(){
-
-        val updatedTaskLabel = taskTimeTextView.text.toString() + " = " + (defaultTaskLength + (taskTimeSeekBar.progress*taskIncrement))
-        val updatedShortBreakLabel = shortBreakTextView.text.toString() + " = " + (defaultShortBreakLength + (shortBreakSeekBar.progress*shortBreakIncrement)).toString()
-        val updatedLongBreakLabel = longBreakTextView.text.toString() + " = " + (defaultLongBreakLength + (longBreakSeekBar.progress*longBreakIncrement)).toString()
-
-        taskTimeTextView.setText(updatedTaskLabel)
-        shortBreakTextView.setText(updatedShortBreakLabel)
-        longBreakTextView.setText(updatedLongBreakLabel)
+        updateTaskLabel()
+        updateShortBreakLabel()
+        updateLongBreakLabel()
     }
+
+    private fun updateTaskLabel(){
+
+        val updatedTaskLabel = resources.getString(R.string.task_length_prompt) + " = " + (defaultTaskLength + (taskTimeSeekBar.progress*taskIncrement)) + "min"
+        taskTimeTextView.setText(updatedTaskLabel)
+
+    }
+
+    private fun updateShortBreakLabel(){
+
+        val updatedShortBreakLabel = resources.getString(R.string.short_break_prompt) + " = " + (defaultShortBreakLength + (shortBreakSeekBar.progress*shortBreakIncrement)).toString() + "min"
+        shortBreakTextView.setText(updatedShortBreakLabel)
+
+    }
+
+    private fun updateLongBreakLabel(){
+
+        val updatedLongBreakLabel = resources.getString(R.string.long_break_prompt) + " = " + (defaultLongBreakLength + (longBreakSeekBar.progress*longBreakIncrement)).toString() + "min"
+        longBreakTextView.setText(updatedLongBreakLabel)
+
+    }
+
+
 
 
 }
