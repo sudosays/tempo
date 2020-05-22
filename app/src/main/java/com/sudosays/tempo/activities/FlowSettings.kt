@@ -96,21 +96,21 @@ class FlowSettings : AppCompatActivity() {
     private fun updateTaskLabel(){
 
         val updatedTaskLabel = resources.getString(R.string.task_length_prompt) + " = " + (defaultTaskLength + (taskTimeSeekBar.progress*taskIncrement)) + "min"
-        taskTimeTextView.setText(updatedTaskLabel)
+        taskTimeTextView.text = updatedTaskLabel
 
     }
 
     private fun updateShortBreakLabel(){
 
         val updatedShortBreakLabel = resources.getString(R.string.short_break_prompt) + " = " + (defaultShortBreakLength + (shortBreakSeekBar.progress*shortBreakIncrement)).toString() + "min"
-        shortBreakTextView.setText(updatedShortBreakLabel)
+        shortBreakTextView.text = updatedShortBreakLabel
 
     }
 
     private fun updateLongBreakLabel(){
 
         val updatedLongBreakLabel = resources.getString(R.string.long_break_prompt) + " = " + (defaultLongBreakLength + (longBreakSeekBar.progress*longBreakIncrement)).toString() + "min"
-        longBreakTextView.setText(updatedLongBreakLabel)
+        longBreakTextView.text = updatedLongBreakLabel
 
     }
 
