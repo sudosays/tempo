@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sudosays.tempo.activities.EditTask">
+    tools:context="com.sudosays.tempo.taskutil.EditTaskActivity">
 
-    <com.sudosays.tempo.views.TaskEdit
+    <com.sudosays.tempo.taskutil.TaskEditView
         android:id="@+id/taskEditView"
         android:layout_width="match_parent"
         android:layout_height="216dp" />

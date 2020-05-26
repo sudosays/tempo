@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.main
 
 
 import android.app.Activity
@@ -14,7 +14,10 @@ import com.sudosays.tempo.async.TaskUpdateAllAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskArrayAdapter
 import com.sudosays.tempo.data.TaskDatabase
-import com.sudosays.tempo.views.TaskView
+import com.sudosays.tempo.flow.FlowOverviewActivity
+import com.sudosays.tempo.taskutil.AddTaskActivity
+import com.sudosays.tempo.taskutil.EditTaskActivity
+import com.sudosays.tempo.taskutil.TaskView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     fun addTask(view: View)
     {
 
-        val intent = Intent(this, AddTask::class.java)
+        val intent = Intent(this, AddTaskActivity::class.java)
         startActivityForResult(intent, ADD_TASK_REQUEST)
 
     }
@@ -60,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     {
         if (taskMutableList.isNotEmpty())
         {
-            val intent = Intent(this, FlowOverview::class.java)
+            val intent = Intent(this, FlowOverviewActivity::class.java)
             startActivity(intent)
         } else
         {
@@ -70,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     fun openSettings(view: View)
     {
-        val intent = Intent(this, FlowSettings::class.java)
+        val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
 
@@ -150,7 +153,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun editTask(view: View) {
-        val intent = Intent(this, EditTask::class.java)
+        val intent = Intent(this, EditTaskActivity::class.java)
         intent.putExtra("taskid", listViewAdapter.getItem(selectedTaskPosition).uid)
         startActivityForResult(intent, EDIT_TASK_REQUEST)
     }

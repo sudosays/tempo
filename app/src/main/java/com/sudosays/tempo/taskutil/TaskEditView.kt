@@ -1,4 +1,4 @@
-package com.sudosays.tempo.views
+package com.sudosays.tempo.taskutil
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -19,9 +19,9 @@ import kotlinx.android.synthetic.main.edit_task.view.*
  * Created on: 2018/09/16
  *
  */
-class TaskEdit @JvmOverloads constructor(context: Context,
-                                         attrs: AttributeSet? = null,
-                                         defStyle: Int = 0
+class TaskEditView @JvmOverloads constructor(context: Context,
+                                             attrs: AttributeSet? = null,
+                                             defStyle: Int = 0
                                          //defStyleRes: Int = 0
 ): ConstraintLayout(context,attrs,defStyle){
 

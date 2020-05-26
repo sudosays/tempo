@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.flow
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -16,7 +16,7 @@ import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_flow_overview.*
 import java.util.*
 
-class FlowOverview : AppCompatActivity() {
+class FlowOverviewActivity : AppCompatActivity() {
 
     var timeRemaining:Long = 0
 

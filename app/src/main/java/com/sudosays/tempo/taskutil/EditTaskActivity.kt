@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.taskutil
 
 import android.app.Activity
 import android.content.Context
@@ -17,7 +17,7 @@ import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.edit_task.view.*
 
-class EditTask : AppCompatActivity() {
+class EditTaskActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
     private lateinit var taskToEdit: Task

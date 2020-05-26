@@ -4,8 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.sudosays.tempo.data.Task
-import com.sudosays.tempo.views.TaskView
+import com.sudosays.tempo.taskutil.TaskView
 
 /**
  *

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBlue"
-    tools:context="com.sudosays.tempo.activities.MainActivity">
+    tools:context="com.sudosays.tempo.main.MainActivity">
 
 
     <ListView

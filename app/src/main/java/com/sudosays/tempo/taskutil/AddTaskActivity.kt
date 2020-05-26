@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.taskutil
 
 import android.app.Activity
 import android.content.Context
@@ -16,7 +16,7 @@ import com.sudosays.tempo.async.TaskInsertAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 
-class AddTask : AppCompatActivity() {
+class AddTaskActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 

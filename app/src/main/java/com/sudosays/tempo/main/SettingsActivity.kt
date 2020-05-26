@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.main
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.sudosays.tempo.R
 import kotlinx.android.synthetic.main.activity_flow_settings.*
 
-class FlowSettings : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     private lateinit var sharedPrefs:SharedPreferences
 
