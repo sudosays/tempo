@@ -18,7 +18,7 @@ import java.util.*
 
 class FlowOverviewActivity : AppCompatActivity() {
 
-    var timeRemaining:Long = 0
+    var timeRemaining: Long = 0
 
     var isRunning = false
     var sessionCount = 0
@@ -51,7 +51,7 @@ class FlowOverviewActivity : AppCompatActivity() {
 
         timeRemainingView.text = formatTimeRemaining(taskLength)
 
-        taskTimer = object: CountDownTimer(taskLength, 100) {
+        taskTimer = object : CountDownTimer(taskLength, 100) {
 
             override fun onFinish() {
                 updateSession()
@@ -63,7 +63,7 @@ class FlowOverviewActivity : AppCompatActivity() {
 
         }
 
-        shortBreakTimer = object: CountDownTimer(shortBreakLength, 100) {
+        shortBreakTimer = object : CountDownTimer(shortBreakLength, 100) {
 
             override fun onFinish() {
                 startTaskTimer()
@@ -75,7 +75,7 @@ class FlowOverviewActivity : AppCompatActivity() {
 
         }
 
-        longBreakTimer = object: CountDownTimer(longBreakLength, 100) {
+        longBreakTimer = object : CountDownTimer(longBreakLength, 100) {
 
             override fun onFinish() {
                 startTaskTimer()
@@ -128,8 +128,7 @@ class FlowOverviewActivity : AppCompatActivity() {
             TaskUpdateAsync(db).execute(todoList[0])
         }
 
-        if (todoList.isEmpty())
-        {
+        if (todoList.isEmpty()) {
             finish()
         } else {
             sessionCount += 1
@@ -159,12 +158,12 @@ class FlowOverviewActivity : AppCompatActivity() {
     }
 
     private fun formatTimeRemaining(t: Long): String {
-        val minLeft = (t/60000).toInt()
-        val secLeft = (t-minLeft*60000)/1000
-        return "%02d:%02d".format(minLeft,secLeft)
+        val minLeft = (t / 60000).toInt()
+        val secLeft = (t - minLeft * 60000) / 1000
+        return "%02d:%02d".format(minLeft, secLeft)
     }
 
-    private fun stopAllTimers(){
+    private fun stopAllTimers() {
         taskTimer.cancel()
         shortBreakTimer.cancel()
         longBreakTimer.cancel()
@@ -184,7 +183,7 @@ class FlowOverviewActivity : AppCompatActivity() {
         for (t in todoList) {
             t.position -= 1
         }
-        val lastPosition = sharedPrefs.getInt("last_position",0)
+        val lastPosition = sharedPrefs.getInt("last_position", 0)
 
         with(sharedPrefs.edit()) {
             if (lastPosition > 0) {

@@ -7,7 +7,7 @@ import com.sudosays.tempo.data.TaskDatabase
 /**
  * Created by Julius on 2019/10/01.
  */
-class TaskUpdateAllAsync(val db: TaskDatabase): AsyncTask<Task, Void, Boolean>(){
+class TaskUpdateAllAsync(val db: TaskDatabase) : AsyncTask<Task, Void, Boolean>() {
 
     override fun doInBackground(vararg p0: Task?): Boolean {
 
@@ -16,7 +16,7 @@ class TaskUpdateAllAsync(val db: TaskDatabase): AsyncTask<Task, Void, Boolean>()
         for (t in p0) {
             t?.let {
                 db.taskDao().updateTask(t)
-                success =true
+                success = true
             }
 
             if (!success) {

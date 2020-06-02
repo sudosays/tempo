@@ -22,15 +22,15 @@ import kotlinx.android.synthetic.main.edit_task.view.*
 class TaskEditView @JvmOverloads constructor(context: Context,
                                              attrs: AttributeSet? = null,
                                              defStyle: Int = 0
-                                         //defStyleRes: Int = 0
-): ConstraintLayout(context,attrs,defStyle){
+        //defStyleRes: Int = 0
+) : ConstraintLayout(context, attrs, defStyle) {
 
     private lateinit var sharedPreferences: SharedPreferences
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.edit_task,this,true)
+        LayoutInflater.from(context).inflate(R.layout.edit_task, this, true)
         sharedPreferences = context.getSharedPreferences(resources.getString(R.string.settings_file_key), Context.MODE_PRIVATE)
-        durationEditText.addTextChangedListener(object: TextWatcher {
+        durationEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -60,7 +60,6 @@ class TaskEditView @JvmOverloads constructor(context: Context,
     }
 
 
-
     /*fun updateSummary(duration:Int) {
         taskTime = duration*25
         summaryTextView.text = "HA!"
@@ -71,19 +70,19 @@ class TaskEditView @JvmOverloads constructor(context: Context,
         val shortBreakLength = sharedPreferences.getInt(resources.getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length))
         val longBreakLength = sharedPreferences.getInt(resources.getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length))
 
-        var totaltime = duration*taskLength
+        var totaltime = duration * taskLength
 
-        val numLongBreaks = if (duration <= 4) 0 else duration/4
+        val numLongBreaks = if (duration <= 4) 0 else duration / 4
         val numShortBreaks = duration - numLongBreaks - 1
 
-        totaltime += numShortBreaks*shortBreakLength + numLongBreaks*longBreakLength
+        totaltime += numShortBreaks * shortBreakLength + numLongBreaks * longBreakLength
 
-        var timeString:String
+        var timeString: String
 
-        if (totaltime/60 > 0) {
-            timeString = "" + totaltime/60 + "h"
-            if (totaltime%60 > 0) {
-                timeString += "" + totaltime%60 + "min"
+        if (totaltime / 60 > 0) {
+            timeString = "" + totaltime / 60 + "h"
+            if (totaltime % 60 > 0) {
+                timeString += "" + totaltime % 60 + "min"
             }
         } else {
             timeString = "" + totaltime + "min"

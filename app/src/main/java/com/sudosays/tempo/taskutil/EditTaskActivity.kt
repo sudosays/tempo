@@ -25,8 +25,7 @@ class EditTaskActivity : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
 
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
 
@@ -38,9 +37,8 @@ class EditTaskActivity : AppCompatActivity() {
         taskEditView.populate(taskToEdit)
     }
 
-    fun saveTask(view: View)
-    {
-        if ((taskEditView.nameEditText.text.isNotEmpty())&&(taskEditView.durationEditText.text.isNotEmpty())) {
+    fun saveTask(view: View) {
+        if ((taskEditView.nameEditText.text.isNotEmpty()) && (taskEditView.durationEditText.text.isNotEmpty())) {
 
             val updatedName = taskEditView.nameEditText.text.toString()
             val updatedDuration = taskEditView.durationEditText.text.toString().toInt()
@@ -51,15 +49,13 @@ class EditTaskActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, Intent())
             Toast.makeText(this.applicationContext, "Task saved successfully.", Toast.LENGTH_SHORT).show()
             finish()
-        } else
-        {
+        } else {
             Toast.makeText(this.applicationContext, "Task cannot be blank.\nDid you mean delete?", Toast.LENGTH_LONG).show()
         }
 
     }
 
-    fun cancel(view: View)
-    {
+    fun cancel(view: View) {
         setResult(Activity.RESULT_CANCELED, Intent())
         finish()
     }
@@ -70,7 +66,7 @@ class EditTaskActivity : AppCompatActivity() {
 
         var lastPostition = sharedPrefs.getInt("last_position", 0)
 
-        with (sharedPrefs.edit()) {
+        with(sharedPrefs.edit()) {
             if (lastPostition > 0) {
                 putInt("last_position", lastPostition - 1)
                 apply()

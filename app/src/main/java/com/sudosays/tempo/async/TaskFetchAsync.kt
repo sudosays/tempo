@@ -11,7 +11,7 @@ import com.sudosays.tempo.data.TaskDatabase
  * Created on: 2019/02/18
  *
  */
-class TaskFetchAsync(val db: TaskDatabase) : AsyncTask<Int, Void, Task>(){
+class TaskFetchAsync(val db: TaskDatabase) : AsyncTask<Int, Void, Task>() {
 
     override fun doInBackground(vararg p0: Int?): Task? {
         if (p0[0] != null) {

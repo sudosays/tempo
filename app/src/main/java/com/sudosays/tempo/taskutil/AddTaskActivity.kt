@@ -22,8 +22,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private lateinit var sharedPrefs: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
@@ -32,10 +31,9 @@ class AddTaskActivity : AppCompatActivity() {
 
     }
 
-    fun saveTask(view: View)
-    {
-        if ((taskEditView.nameEditText.text.isNotEmpty())&&(taskEditView.durationEditText.text.isNotEmpty())) {
-            val last_position = sharedPrefs.getInt("last_position",0)
+    fun saveTask(view: View) {
+        if ((taskEditView.nameEditText.text.isNotEmpty()) && (taskEditView.durationEditText.text.isNotEmpty())) {
+            val last_position = sharedPrefs.getInt("last_position", 0)
             val task = Task(0, taskEditView.nameEditText.text.toString(), taskEditView.durationEditText.text.toString().toInt(), last_position)
             TaskInsertAsync(db).execute(task)
 
@@ -46,15 +44,13 @@ class AddTaskActivity : AppCompatActivity() {
 
             setResult(Activity.RESULT_OK, Intent())
             finish()
-        } else
-        {
-            Toast.makeText(this.applicationContext,"You need to fill out the task!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this.applicationContext, "You need to fill out the task!", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun cancel(view: View)
-    {
+    fun cancel(view: View) {
         setResult(Activity.RESULT_OK, Intent())
         finish()
     }

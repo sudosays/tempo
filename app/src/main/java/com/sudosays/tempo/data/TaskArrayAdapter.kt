@@ -17,8 +17,7 @@ class TaskArrayAdapter constructor(
         context: Context,
         resource: Int,
         objects: MutableList<Task>
-        ): ArrayAdapter<Task>(context, resource, objects)
-{
+) : ArrayAdapter<Task>(context, resource, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val taskView = TaskView(parent!!.context)
