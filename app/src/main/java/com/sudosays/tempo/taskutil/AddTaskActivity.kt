@@ -32,9 +32,9 @@ class AddTaskActivity : AppCompatActivity() {
     }
 
     fun saveTask(view: View) {
-        if ((taskEditView.nameEditText.text.isNotEmpty()) && (taskEditView.durationEditText.text.isNotEmpty())) {
+        if (taskEditView.nameEditText.text.isNotEmpty()) {
             val last_position = sharedPrefs.getInt("last_position", 0)
-            val task = Task(0, taskEditView.nameEditText.text.toString(), taskEditView.durationEditText.text.toString().toInt(), last_position)
+            val task = Task(0, taskEditView.nameEditText.text.toString(), taskEditView.durationSpinner.selectedItemPosition+1, last_position)
             TaskInsertAsync(db).execute(task)
 
             with(sharedPrefs.edit()) {

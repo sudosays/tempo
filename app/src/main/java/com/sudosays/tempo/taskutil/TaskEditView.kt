@@ -7,6 +7,8 @@ import android.support.constraint.ConstraintLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.sudosays.tempo.R
 import com.sudosays.tempo.data.Task
@@ -25,38 +27,30 @@ class TaskEditView @JvmOverloads constructor(context: Context,
         //defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle) {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private var sharedPreferences: SharedPreferences
 
     init {
         LayoutInflater.from(context).inflate(R.layout.edit_task, this, true)
         sharedPreferences = context.getSharedPreferences(resources.getString(R.string.settings_file_key), Context.MODE_PRIVATE)
-        durationEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
 
-            }
+        val durationArray = generateDurationSelections()
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val duration = p0.toString().toIntOrNull()
-
-                summaryTextView.text = ""
-
-                duration?.let {
-                    summaryTextView.text = convertDurationToTime(it)
-                }
-            }
-
-        })
+        ArrayAdapter(
+                this.context,
+                android.R.layout.simple_spinner_item,
+                durationArray
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            durationSpinner.adapter = adapter
+        }
 
     }
 
     fun populate(task: Task) {
         nameEditText.setText(task.name, TextView.BufferType.EDITABLE)
-        durationEditText.setText(task.duration.toString(), TextView.BufferType.EDITABLE)
-
+        durationSpinner.setSelection(task.duration - 1)
     }
 
 
@@ -91,5 +85,8 @@ class TaskEditView @JvmOverloads constructor(context: Context,
         return timeString
     }
 
+    private fun generateDurationSelections(num: Int = 8): Array<String> {
+        return Array(num) { i -> convertDurationToTime(i+1) + " ("+ (i+1).toString() + " sessions)" }
+    }
 
 }

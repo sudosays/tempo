@@ -61,8 +61,8 @@
 
             <TextView
                 android:id="@+id/durationEditView"
-                android:layout_width="100dp"
-                android:layout_height="47dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -71,28 +71,20 @@
                 android:textColor="@color/defaultText"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/durationEditText"
+
+            <Spinner
+                android:id="@+id/durationSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/edit_task_task_duration_textedit_prompt"
-                android:inputType="number" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/durationEditLayout"
+                tools:layout_editor_absoluteX="0dp" />
 
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/summaryTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/durationEditLayout" />
 
     </android.support.constraint.ConstraintLayout>
 

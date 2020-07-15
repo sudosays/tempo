@@ -38,10 +38,10 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     fun saveTask(view: View) {
-        if ((taskEditView.nameEditText.text.isNotEmpty()) && (taskEditView.durationEditText.text.isNotEmpty())) {
+        if (taskEditView.nameEditText.text.isNotEmpty()) {
 
             val updatedName = taskEditView.nameEditText.text.toString()
-            val updatedDuration = taskEditView.durationEditText.text.toString().toInt()
+            val updatedDuration = taskEditView.durationSpinner.selectedItemPosition + 1
             val updatedTask = Task(taskToEdit.uid, updatedName, updatedDuration, taskToEdit.position)
 
             TaskUpdateAsync(db).execute(updatedTask)
