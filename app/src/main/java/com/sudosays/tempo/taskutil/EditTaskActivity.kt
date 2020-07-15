@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.taskutil
 
 import android.app.Activity
 import android.content.Context
@@ -17,7 +17,7 @@ import com.sudosays.tempo.data.TaskDatabase
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.edit_task.view.*
 
-class EditTask : AppCompatActivity() {
+class EditTaskActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
     private lateinit var taskToEdit: Task
@@ -25,8 +25,7 @@ class EditTask : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
 
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
 
@@ -35,15 +34,14 @@ class EditTask : AppCompatActivity() {
 
 
         taskToEdit = TaskFetchAsync(db).execute(intent.extras["taskid"] as Int).get()
-        taskEditview.populate(taskToEdit)
+        taskEditView.populate(taskToEdit)
     }
 
-    fun saveTask(view: View)
-    {
-        if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
+    fun saveTask(view: View) {
+        if (taskEditView.nameEditText.text.isNotEmpty()) {
 
-            val updatedName = taskEditview.nameEditText.text.toString()
-            val updatedDuration = taskEditview.durationEditText.text.toString().toInt()
+            val updatedName = taskEditView.nameEditText.text.toString()
+            val updatedDuration = taskEditView.durationSpinner.selectedItemPosition + 1
             val updatedTask = Task(taskToEdit.uid, updatedName, updatedDuration, taskToEdit.position)
 
             TaskUpdateAsync(db).execute(updatedTask)
@@ -51,15 +49,13 @@ class EditTask : AppCompatActivity() {
             setResult(Activity.RESULT_OK, Intent())
             Toast.makeText(this.applicationContext, "Task saved successfully.", Toast.LENGTH_SHORT).show()
             finish()
-        } else
-        {
+        } else {
             Toast.makeText(this.applicationContext, "Task cannot be blank.\nDid you mean delete?", Toast.LENGTH_LONG).show()
         }
 
     }
 
-    fun cancel(view: View)
-    {
+    fun cancel(view: View) {
         setResult(Activity.RESULT_CANCELED, Intent())
         finish()
     }
@@ -70,7 +66,7 @@ class EditTask : AppCompatActivity() {
 
         var lastPostition = sharedPrefs.getInt("last_position", 0)
 
-        with (sharedPrefs.edit()) {
+        with(sharedPrefs.edit()) {
             if (lastPostition > 0) {
                 putInt("last_position", lastPostition - 1)
                 apply()

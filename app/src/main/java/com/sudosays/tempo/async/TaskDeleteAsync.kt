@@ -11,7 +11,7 @@ import com.sudosays.tempo.data.TaskDatabase
  * Created on: 2019/02/18
  *
  */
-class TaskDeleteAsync(val db: TaskDatabase): AsyncTask<Task, Void, Boolean> (){
+class TaskDeleteAsync(val db: TaskDatabase) : AsyncTask<Task, Void, Boolean>() {
 
     override fun doInBackground(vararg p0: Task?): Boolean {
         p0[0]?.let {

@@ -4,8 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.sudosays.tempo.data.Task
-import com.sudosays.tempo.views.TaskView
+import com.sudosays.tempo.taskutil.TaskView
 
 /**
  *
@@ -18,8 +17,7 @@ class TaskArrayAdapter constructor(
         context: Context,
         resource: Int,
         objects: MutableList<Task>
-        ): ArrayAdapter<Task>(context, resource, objects)
-{
+) : ArrayAdapter<Task>(context, resource, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val taskView = TaskView(parent!!.context)

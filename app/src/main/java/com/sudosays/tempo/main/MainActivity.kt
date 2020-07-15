@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.main
 
 
 import android.app.Activity
@@ -14,7 +14,10 @@ import com.sudosays.tempo.async.TaskUpdateAllAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskArrayAdapter
 import com.sudosays.tempo.data.TaskDatabase
-import com.sudosays.tempo.views.TaskView
+import com.sudosays.tempo.flow.FlowOverviewActivity
+import com.sudosays.tempo.taskutil.AddTaskActivity
+import com.sudosays.tempo.taskutil.EditTaskActivity
+import com.sudosays.tempo.taskutil.TaskView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,10 +29,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 
-    private var selectedTaskPosition:Int = -1
+    private var selectedTaskPosition: Int = -1
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -48,43 +50,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addTask(view: View)
-    {
+    fun addTask(view: View) {
 
-        val intent = Intent(this, AddTask::class.java)
+        val intent = Intent(this, AddTaskActivity::class.java)
         startActivityForResult(intent, ADD_TASK_REQUEST)
 
     }
 
-    fun startFlow(view: View)
-    {
-        if (taskMutableList.isNotEmpty())
-        {
-            val intent = Intent(this, FlowOverview::class.java)
+    fun startFlow(view: View) {
+        if (taskMutableList.isNotEmpty()) {
+            val intent = Intent(this, FlowOverviewActivity::class.java)
             startActivity(intent)
-        } else
-        {
-            Toast.makeText(this,R.string.start_flow_help, Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, R.string.start_flow_help, Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun openSettings(view: View)
-    {
-        val intent = Intent(this, FlowSettings::class.java)
+    fun openSettings(view: View) {
+        val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent)
-    {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
         when (requestCode) {
-            ADD_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {reloadTasks()}
+            ADD_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {
+                reloadTasks()
+            }
             EDIT_TASK_REQUEST -> if (resultCode == Activity.RESULT_OK) {
                 reloadTasks()
                 switchToOverviewMode(editTaskButton)
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 reloadTasks()
-            // If the task was deleted
+                // If the task was deleted
             } else if (resultCode == Activity.RESULT_FIRST_USER) {
                 if (taskMutableList.size != 0) {
                     for (i in selectedTaskPosition..(taskMutableList.size - 1)) {
@@ -98,14 +96,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume()
-    {
+    override fun onResume() {
         super.onResume()
         reloadTasks()
     }
 
-    private fun reloadTasks()
-    {
+    private fun reloadTasks() {
         taskMutableList.clear()
         taskMutableList.addAll(TaskFetchAllAsync(db).execute().get())
         listViewAdapter.notifyDataSetChanged()
@@ -150,7 +146,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun editTask(view: View) {
-        val intent = Intent(this, EditTask::class.java)
+        val intent = Intent(this, EditTaskActivity::class.java)
         intent.putExtra("taskid", listViewAdapter.getItem(selectedTaskPosition).uid)
         startActivityForResult(intent, EDIT_TASK_REQUEST)
     }
@@ -187,7 +183,7 @@ class MainActivity : AppCompatActivity() {
         TaskUpdateAllAsync(db).execute(*taskMutableList.toTypedArray())
     }
 
-    private fun setTaskViewSelected(position:Int, isSelected: Boolean) {
+    private fun setTaskViewSelected(position: Int, isSelected: Boolean) {
         val taskView = taskListView.getChildAt(position) as TaskView
         if (isSelected) {
             taskView.showSelected()

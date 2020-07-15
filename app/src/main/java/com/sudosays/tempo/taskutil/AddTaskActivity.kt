@@ -1,4 +1,4 @@
-package com.sudosays.tempo.activities
+package com.sudosays.tempo.taskutil
 
 import android.app.Activity
 import android.content.Context
@@ -16,14 +16,13 @@ import com.sudosays.tempo.async.TaskInsertAsync
 import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskDatabase
 
-class AddTask : AppCompatActivity() {
+class AddTaskActivity : AppCompatActivity() {
 
     private lateinit var db: TaskDatabase
 
     private lateinit var sharedPrefs: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
@@ -32,11 +31,10 @@ class AddTask : AppCompatActivity() {
 
     }
 
-    fun saveTask(view: View)
-    {
-        if ((taskEditview.nameEditText.text.isNotEmpty())&&(taskEditview.durationEditText.text.isNotEmpty())) {
-            val last_position = sharedPrefs.getInt("last_position",0)
-            val task = Task(0, taskEditview.nameEditText.text.toString(), taskEditview.durationEditText.text.toString().toInt(), last_position)
+    fun saveTask(view: View) {
+        if (taskEditView.nameEditText.text.isNotEmpty()) {
+            val last_position = sharedPrefs.getInt("last_position", 0)
+            val task = Task(0, taskEditView.nameEditText.text.toString(), taskEditView.durationSpinner.selectedItemPosition+1, last_position)
             TaskInsertAsync(db).execute(task)
 
             with(sharedPrefs.edit()) {
@@ -46,15 +44,13 @@ class AddTask : AppCompatActivity() {
 
             setResult(Activity.RESULT_OK, Intent())
             finish()
-        } else
-        {
-            Toast.makeText(this.applicationContext,"You need to fill out the task!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this.applicationContext, "You need to fill out the task!", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun cancel(view: View)
-    {
+    fun cancel(view: View) {
         setResult(Activity.RESULT_OK, Intent())
         finish()
     }

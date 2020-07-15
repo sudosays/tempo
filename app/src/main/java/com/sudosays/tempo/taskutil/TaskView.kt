@@ -1,4 +1,4 @@
-package com.sudosays.tempo.views
+package com.sudosays.tempo.taskutil
 
 /**
  *
@@ -29,20 +29,18 @@ class TaskView @JvmOverloads constructor(
         attrs: AttributeSet? = null,
         defStyle: Int = 0,
         defStyleRes: Int = 0
-        ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
+) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    init
-    {
+    init {
         LayoutInflater.from(context).inflate(R.layout.view_task, this, true)
-        this.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        this.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         sharedPreferences = context.getSharedPreferences(resources.getString(R.string.settings_file_key), Context.MODE_PRIVATE)
     }
 
-    fun populate(task: Task)
-    {
+    fun populate(task: Task) {
 
         nameView.text = task.name
         durationView.text = convertDurationToTime(task.duration.toInt())
@@ -69,19 +67,19 @@ class TaskView @JvmOverloads constructor(
         val shortBreakLength = sharedPreferences.getInt(resources.getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length))
         val longBreakLength = sharedPreferences.getInt(resources.getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length))
 
-        var totaltime = duration*taskLength
+        var totaltime = duration * taskLength
 
-        val numLongBreaks = if (duration <= 4) 0 else duration/4
+        val numLongBreaks = if (duration <= 4) 0 else duration / 4
         val numShortBreaks = duration - numLongBreaks - 1
 
-        totaltime += numShortBreaks*shortBreakLength + numLongBreaks*longBreakLength
+        totaltime += numShortBreaks * shortBreakLength + numLongBreaks * longBreakLength
 
-        var timeString:String
+        var timeString: String
 
-        if (totaltime/60 > 0) {
-            timeString = "" + totaltime/60 + "h"
-            if (totaltime%60 > 0) {
-                timeString += "" + totaltime%60 + "min"
+        if (totaltime / 60 > 0) {
+            timeString = "" + totaltime / 60 + "h"
+            if (totaltime % 60 > 0) {
+                timeString += "" + totaltime % 60 + "min"
             }
         } else {
             timeString = "" + totaltime + "min"

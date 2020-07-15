@@ -6,16 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBlue"
-    tools:context="com.sudosays.tempo.activities.MainActivity">
+    tools:context="com.sudosays.tempo.main.MainActivity">
 
 
     <ListView
         android:id="@+id/taskListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:divider="@color/backgroundBlue"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
