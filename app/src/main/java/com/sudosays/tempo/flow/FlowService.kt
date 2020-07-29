@@ -37,7 +37,7 @@ class FlowService : Service() {
 
     private lateinit var sharedPrefs: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /** override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         db = TaskDatabase.getInstance(this)
@@ -88,7 +88,7 @@ class FlowService : Service() {
 
         }
 
-    }
+    } **/
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -135,7 +135,7 @@ class FlowService : Service() {
         }
 
         if (todoList.isEmpty()) {
-            finish()
+            //finish()
         } else {
             sessionCount += 1
             if (sessionCount >= 4) {
