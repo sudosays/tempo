@@ -4,10 +4,10 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Bundle
+import android.os.Binder
 import android.os.CountDownTimer
 import android.os.IBinder
-import android.view.View
+import android.widget.Toast
 import com.sudosays.tempo.R
 import com.sudosays.tempo.async.TaskDeleteAsync
 import com.sudosays.tempo.async.TaskFetchAllAsync
@@ -19,12 +19,32 @@ import com.sudosays.tempo.data.TaskDatabase
 import java.util.*
 
 class FlowService : Service() {
-    /// This is a foreground service and as such needs a Notification designed for it.
-    private var timeRemaining: Long = 0
 
-    private var isRunning = false
+    enum class SessionType {
+        FOCUS,
+        SHORT_BREAK,
+        LONG_BREAK
+    }
+
+    var isRunning = false
+        private set
+
+    /// This is a foreground service and as such needs a Notification designed for it.
+    var timeRemaining: Long = 0
+        private set
+
+    var currentSessionType: SessionType = SessionType.FOCUS
+        private set
+
+    lateinit var currentText: String
+        private set
+
     private var sessionCount = 0
 
+    private val binder = FlowBinder()
+    inner class FlowBinder : Binder() {
+        fun getService(): FlowService = this@FlowService
+    }
 
     private lateinit var taskTimer: CountDownTimer
     private lateinit var shortBreakTimer: CountDownTimer
@@ -33,82 +53,27 @@ class FlowService : Service() {
     private lateinit var db: TaskDatabase
     private val todoList = mutableListOf<Task>()
 
-    private lateinit var currentText: String
-
     private lateinit var sharedPrefs: SharedPreferences
 
-    /** override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate() {
+        resetService()
+        super.onCreate()
 
-        db = TaskDatabase.getInstance(this)
-        todoList.addAll(TaskFetchAllAsync(db).execute().get())
-        todoList?.let {
-            currentText = todoList[0].name
-        }
-
-        sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE)
-        val taskLength = sharedPrefs.getInt(getString(R.string.task_length_key), resources.getInteger(R.integer.default_task_length)).toLong() * 60000
-        val shortBreakLength = sharedPrefs.getInt(getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length)).toLong() * 60000
-        val longBreakLength = sharedPrefs.getInt(getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length)).toLong() * 60000
-
-
-        taskTimer = object : CountDownTimer(taskLength, 100) {
-
-            override fun onFinish() {
-                updateSession()
-            }
-
-            override fun onTick(p0: Long) {
-                updateTimeRemaining(p0)
-            }
-
-        }
-
-        shortBreakTimer = object : CountDownTimer(shortBreakLength, 100) {
-
-            override fun onFinish() {
-                startTaskTimer()
-            }
-
-            override fun onTick(p0: Long) {
-                updateTimeRemaining(p0)
-            }
-
-        }
-
-        longBreakTimer = object : CountDownTimer(longBreakLength, 100) {
-
-            override fun onFinish() {
-                startTaskTimer()
-            }
-
-            override fun onTick(p0: Long) {
-                updateTimeRemaining(p0)
-            }
-
-        }
-
-    } **/
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        // TODO Implement this
-
-        // If the flow service is killed we want to completely restart the flow from the beginning
         return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder? {
-        // TODO: Return the communication channel to the service.
-        // Returns: Time left (formatted) and Current message (break message or task name)
-        throw UnsupportedOperationException("Not yet implemented")
+        return binder
     }
 
     override fun onDestroy() {
-
-        // TODO fix for service
-
         stopAllTimers()
+
+        Toast.makeText(this.applicationContext, "FlowService Timers Stopped & Service Destroyed.", Toast.LENGTH_LONG).show()
+
         super.onDestroy()
     }
 
@@ -116,11 +81,12 @@ class FlowService : Service() {
 
     private fun updateTimeRemaining(timeLeft: Long) {
         timeRemaining = timeLeft
-        //For now cause it's connected to a view
     }
 
-    private fun startTaskTimer() {
+    fun startTaskTimer() {
         taskTimer.start()
+        currentSessionType = SessionType.FOCUS
+        isRunning = true
     }
 
     private fun updateSession() {
@@ -135,7 +101,7 @@ class FlowService : Service() {
         }
 
         if (todoList.isEmpty()) {
-            //finish()
+            stopSelf()
         } else {
             sessionCount += 1
             if (sessionCount >= 4) {
@@ -150,11 +116,13 @@ class FlowService : Service() {
     private fun startLongBreak() {
         longBreakTimer.start()
         currentText = getBreakMessage()
+        currentSessionType = SessionType.LONG_BREAK
     }
 
     private fun startShortBreak() {
         shortBreakTimer.start()
         currentText = getBreakMessage()
+        currentSessionType = SessionType.SHORT_BREAK
     }
 
     private fun formatTimeRemaining(t: Long): String {
@@ -163,15 +131,24 @@ class FlowService : Service() {
         return "%02d:%02d".format(minLeft, secLeft)
     }
 
-    private fun stopAllTimers() {
+    fun getTimeRemaining(): String {
+        return formatTimeRemaining(timeRemaining)
+    }
+
+    fun stopAllTimers() {
         taskTimer.cancel()
         shortBreakTimer.cancel()
         longBreakTimer.cancel()
+        isRunning = false
+    }
+
+    fun getNextTaskName(): String {
+        return todoList[0].name
     }
 
     private fun getBreakMessage(): String {
         val messages = resources.getStringArray(R.array.break_messages)
-        return messages.get(Random().nextInt(messages.size))
+        return messages[Random().nextInt(messages.size)]
     }
 
     private fun decrementPositions() {
@@ -193,4 +170,52 @@ class FlowService : Service() {
         TaskUpdateAllAsync(db).execute(*todoList.toTypedArray())
     }
 
+    fun resetService() {
+        db = TaskDatabase.getInstance(this)
+        todoList.addAll(TaskFetchAllAsync(db).execute().get())
+        todoList?.let {
+            currentText = todoList[0].name
+        }
+
+        sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE)
+        val taskLength = sharedPrefs.getInt(getString(R.string.task_length_key), resources.getInteger(R.integer.default_task_length)).toLong() * 60000
+        val shortBreakLength = sharedPrefs.getInt(getString(R.string.short_break_key), resources.getInteger(R.integer.default_short_break_length)).toLong() * 60000
+        val longBreakLength = sharedPrefs.getInt(getString(R.string.long_break_key), resources.getInteger(R.integer.default_long_break_length)).toLong() * 60000
+
+        taskTimer = object : CountDownTimer(taskLength, 100) {
+
+            override fun onFinish() {
+                updateSession()
+            }
+
+            override fun onTick(p0: Long) {
+                updateTimeRemaining(p0)
+            }
+
+        }
+        shortBreakTimer = object : CountDownTimer(shortBreakLength, 100) {
+
+            override fun onFinish() {
+                startTaskTimer()
+            }
+
+            override fun onTick(p0: Long) {
+                updateTimeRemaining(p0)
+            }
+
+        }
+        longBreakTimer = object : CountDownTimer(longBreakLength, 100) {
+
+            override fun onFinish() {
+                startTaskTimer()
+            }
+
+            override fun onTick(p0: Long) {
+                updateTimeRemaining(p0)
+            }
+
+        }
+
+
+    }
 }
