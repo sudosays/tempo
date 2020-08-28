@@ -51,7 +51,7 @@ class FlowOverviewActivity : AppCompatActivity() {
         super.onStart()
 
         Intent(this, FlowService::class.java).also { intent ->
-            startService(intent)
+            //startService(intent)
             bindService(intent, flowServiceConnection, Context.BIND_AUTO_CREATE)
         }
 
@@ -94,6 +94,12 @@ class FlowOverviewActivity : AppCompatActivity() {
                 currentSessionType = flowService.currentSessionType
             }
 
+            if (flowService.isRunning) {
+                button.text = getString(R.string.button_stop_flow)
+            } else {
+                button.text = getString(R.string.button_start_flow)
+            }
+
             updateTimeRemaining()
             if (button.visibility != View.VISIBLE) {
                 button.visibility = View.VISIBLE
@@ -106,16 +112,8 @@ class FlowOverviewActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        // Flow service? stopAllTimers()
-        if (serviceBound) {
-            flowService.stopAllTimers()
-            stopService(
-                    Intent(this, FlowService::class.java)
-            )
-        }
 
         uiUpdateHandler.removeCallbacks(uiUpdateRunnable)
-        currentTaskNameView.text = ""
     }
 
     private fun setFocusUI() {
@@ -144,6 +142,5 @@ class FlowOverviewActivity : AppCompatActivity() {
         nextTaskNameView.visibility = View.VISIBLE
 
     }
-
 
 }

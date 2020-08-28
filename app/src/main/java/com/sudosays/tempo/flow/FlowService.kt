@@ -1,5 +1,6 @@
 package com.sudosays.tempo.flow
 
+import android.app.Notification
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Binder
 import android.os.CountDownTimer
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
 import android.widget.Toast
 import com.sudosays.tempo.R
 import com.sudosays.tempo.async.TaskDeleteAsync
@@ -30,8 +32,7 @@ class FlowService : Service() {
         private set
 
     /// This is a foreground service and as such needs a Notification designed for it.
-    var timeRemaining: Long = 0
-        private set
+    private var timeRemaining: Long = 0
 
     var currentSessionType: SessionType = SessionType.FOCUS
         private set
@@ -70,9 +71,9 @@ class FlowService : Service() {
     }
 
     override fun onDestroy() {
-        stopAllTimers()
+        //stopAllTimers()
 
-        Toast.makeText(this.applicationContext, "FlowService Timers Stopped & Service Destroyed.", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this.applicationContext, "FlowService Timers Stopped & Service Destroyed.", Toast.LENGTH_LONG).show()
 
         super.onDestroy()
     }
@@ -87,6 +88,7 @@ class FlowService : Service() {
         taskTimer.start()
         currentSessionType = SessionType.FOCUS
         isRunning = true
+        stopForeground(true)
     }
 
     private fun updateSession() {
@@ -218,4 +220,5 @@ class FlowService : Service() {
 
 
     }
+
 }

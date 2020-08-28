@@ -15,6 +15,7 @@ import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskArrayAdapter
 import com.sudosays.tempo.data.TaskDatabase
 import com.sudosays.tempo.flow.FlowOverviewActivity
+import com.sudosays.tempo.flow.FlowService
 import com.sudosays.tempo.taskutil.AddTaskActivity
 import com.sudosays.tempo.taskutil.EditTaskActivity
 import com.sudosays.tempo.taskutil.TaskView
@@ -47,6 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         taskListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             switchToEditMode(position, view as TaskView)
+        }
+
+        Intent(this, FlowService::class.java).also { intent ->
+            startService(intent)
+            //bindService(intent, flowServiceConnection, Context.BIND_AUTO_CREATE)
         }
     }
 
@@ -125,6 +131,13 @@ class MainActivity : AppCompatActivity() {
         taskView.showSelected()
         selectedTaskPosition = taskPosition
 
+    }
+
+    override fun onDestroy() {
+        stopService(
+                Intent(this, FlowService::class.java)
+        )
+        super.onDestroy()
     }
 
     fun switchToOverviewMode(view: View) {
