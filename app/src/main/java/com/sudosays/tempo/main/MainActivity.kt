@@ -2,9 +2,13 @@ package com.sudosays.tempo.main
 
 
 import android.app.Activity
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
@@ -15,6 +19,7 @@ import com.sudosays.tempo.data.Task
 import com.sudosays.tempo.data.TaskArrayAdapter
 import com.sudosays.tempo.data.TaskDatabase
 import com.sudosays.tempo.flow.FlowOverviewActivity
+import com.sudosays.tempo.flow.FlowService
 import com.sudosays.tempo.taskutil.AddTaskActivity
 import com.sudosays.tempo.taskutil.EditTaskActivity
 import com.sudosays.tempo.taskutil.TaskView
@@ -30,6 +35,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var db: TaskDatabase
 
     private var selectedTaskPosition: Int = -1
+
+    private lateinit var flowService: FlowService
+    private var serviceBound = false
+
+    private val flowServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
+            val binder = service as FlowService.FlowBinder
+            flowService = binder.getService()
+            serviceBound = true
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            serviceBound = false
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +70,11 @@ class MainActivity : AppCompatActivity() {
         taskListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             switchToEditMode(position, view as TaskView)
         }
+
+        Intent(this, FlowService::class.java).also { intent ->
+            startService(intent)
+            bindService(intent, flowServiceConnection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     fun addTask(view: View) {
@@ -59,8 +86,13 @@ class MainActivity : AppCompatActivity() {
 
     fun startFlow(view: View) {
         if (taskMutableList.isNotEmpty()) {
+            if (serviceBound) {
+                flowService.resetService()
+            }
             val intent = Intent(this, FlowOverviewActivity::class.java)
+
             startActivity(intent)
+
         } else {
             Toast.makeText(this, R.string.start_flow_help, Toast.LENGTH_SHORT).show()
         }
@@ -127,6 +159,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        stopService(
+                Intent(this, FlowService::class.java)
+        )
+        super.onDestroy()
+    }
+
     fun switchToOverviewMode(view: View) {
         startFlowButton.visibility = View.VISIBLE
         addTaskButton.visibility = View.VISIBLE
@@ -181,6 +220,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun syncPositionsWithDb() {
         TaskUpdateAllAsync(db).execute(*taskMutableList.toTypedArray())
+        if (serviceBound) {
+            flowService.resetService()
+        }
     }
 
     private fun setTaskViewSelected(position: Int, isSelected: Boolean) {

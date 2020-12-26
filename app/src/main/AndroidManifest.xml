@@ -22,6 +22,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".main.SettingsActivity" />
         <activity android:name=".taskutil.EditTaskActivity" />
+
+        <service
+            android:name=".flow.FlowService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
