@@ -57,7 +57,7 @@ class FlowService : Service() {
     private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate() {
-        resetService()
+        //resetService()
         super.onCreate()
 
     }
@@ -174,9 +174,14 @@ class FlowService : Service() {
 
     fun resetService() {
         db = TaskDatabase.getInstance(this)
+        todoList.clear()
         todoList.addAll(TaskFetchAllAsync(db).execute().get())
-        todoList?.let {
-            currentText = todoList[0].name
+        if (todoList.isNotEmpty()) {
+            todoList?.let {
+                currentText = todoList[0].name
+            }
+        } else {
+            currentText = "None"
         }
 
         sharedPrefs = this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE)

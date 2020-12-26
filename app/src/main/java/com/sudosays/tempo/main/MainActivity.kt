@@ -2,9 +2,13 @@ package com.sudosays.tempo.main
 
 
 import android.app.Activity
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
@@ -32,6 +36,23 @@ class MainActivity : AppCompatActivity() {
 
     private var selectedTaskPosition: Int = -1
 
+    private lateinit var flowService: FlowService
+    private var serviceBound = false
+
+    private val flowServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
+            val binder = service as FlowService.FlowBinder
+            flowService = binder.getService()
+            serviceBound = true
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            serviceBound = false
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         Intent(this, FlowService::class.java).also { intent ->
             startService(intent)
-            //bindService(intent, flowServiceConnection, Context.BIND_AUTO_CREATE)
+            bindService(intent, flowServiceConnection, Context.BIND_AUTO_CREATE)
         }
     }
 
@@ -65,8 +86,13 @@ class MainActivity : AppCompatActivity() {
 
     fun startFlow(view: View) {
         if (taskMutableList.isNotEmpty()) {
+            if (serviceBound) {
+                flowService.resetService()
+            }
             val intent = Intent(this, FlowOverviewActivity::class.java)
+
             startActivity(intent)
+
         } else {
             Toast.makeText(this, R.string.start_flow_help, Toast.LENGTH_SHORT).show()
         }
@@ -194,6 +220,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun syncPositionsWithDb() {
         TaskUpdateAllAsync(db).execute(*taskMutableList.toTypedArray())
+        if (serviceBound) {
+            flowService.resetService()
+        }
     }
 
     private fun setTaskViewSelected(position: Int, isSelected: Boolean) {
